@@ -1,3 +1,4 @@
 flask
 flask-restful
+git+https://github.com/tehzevo/nd-to-json#egg=nd_to_json
 tensorboardx
