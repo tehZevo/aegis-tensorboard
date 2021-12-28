@@ -5,6 +5,10 @@ from flask_restful import Resource, Api
 from tensorboardX import SummaryWriter
 from nd_to_json import nd_to_json, json_to_nd
 
+import sys
+import signal
+signal.signal(signal.SIGTERM, lambda: sys.exit(0))
+
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
