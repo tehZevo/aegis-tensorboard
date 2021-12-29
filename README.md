@@ -13,6 +13,7 @@
 That's all it does. :)
 
 ## TODO
+* add support for hyperparameters (https://tensorboardx.readthedocs.io/en/latest/tensorboard.html#tensorboardX.SummaryWriter.add_hparams)
 * Support/test other types of TensorBoard logs (image, video, text?)
 * Add ability to create new timestamped logs
 * Add ability to delete old logs (or at least close the logger so the files can be deleted)
