@@ -98,17 +98,29 @@ class Video(Resource):
         run["writer"].add_image(tag_name, x, get_step(run_name, p), fps=fps)
         increment_step(run_name, p)
 
+# class HParams(Resource):
+#     def post(self, run_name, name):
+#         data = request.get_json(force=True)
+#         params = data["params"]
+#         metrics = data["metrics"]
+#
+#         run = resolve_run(run_name)
+#         p = "hparams/" + name
+#         #write and increment step
+#         run["writer"].add_hparams(params, metrics, name, get_step(run_name, p))
+#         increment_step(run_name, p)
+
 class HParams(Resource):
-    def post(self, run_name, name):
+    def post(self, experiment, id):
         data = request.get_json(force=True)
         params = data["params"]
         metrics = data["metrics"]
 
-        run = resolve_run(run_name)
-        p = "hparams/" + name
+        run = resolve_run(experiment)
+        p = "hparams/" + id
         #write and increment step
-        run["writer"].add_hparams(params, metrics, name, get_step(run_name, p))
-        increment_step(run_name, p)
+        run["writer"].add_hparams(params, metrics, global_step=get_step(experiment, p))
+        increment_step(experiment, p)
 
 #TODO: mesh?
 
@@ -123,7 +135,7 @@ api.add_resource(Image, '/image/<run_name>/<group>/<tag>/<format>')
 #api.add_resource(Image, '/image/<run_name>/<group>/<tag>')
 api.add_resource(Video, '/video/<run_name>/<group>/<tag>/<fps>')
 #api.add_resource(Video, '/video/<run_name>/<group>/<tag>')
-api.add_resource(HParams, '/hparams/<run_name>/<name>')
+api.add_resource(HParams, '/hparams/<experiment>/<id>')
 
 
 if __name__ == '__main__':
