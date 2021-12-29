@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+
+  logger:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - "./tensorboard:/app/runs"
+
+  tensorboard:
+    image: tensorflow/tensorflow
+    volumes:
+      - "./tensorboard:/runs"
+    ports:
+      - "6006:6006"
+    command: "tensorboard --logdir /runs --bind_all"

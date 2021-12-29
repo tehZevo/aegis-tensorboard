@@ -1,5 +1,5 @@
 import os
-
+import json
 from flask import Flask, request
 from flask_restful import Resource, Api
 from tensorboardX import SummaryWriter
@@ -98,6 +98,18 @@ class Video(Resource):
         run["writer"].add_image(tag_name, x, get_step(run_name, p), fps=fps)
         increment_step(run_name, p)
 
+class HParams(Resource):
+    def post(self, run_name, name):
+        data = request.get_json(force=True)
+        params = data["params"]
+        metrics = data["metrics"]
+
+        run = resolve_run(run_name)
+        p = "hparams/" + name
+        #write and increment step
+        run["writer"].add_hparams(params, metrics, name, get_step(run_name, p))
+        increment_step(run_name, p)
+
 #TODO: mesh?
 
 app = Flask(__name__)
@@ -111,6 +123,8 @@ api.add_resource(Image, '/image/<run_name>/<group>/<tag>/<format>')
 #api.add_resource(Image, '/image/<run_name>/<group>/<tag>')
 api.add_resource(Video, '/video/<run_name>/<group>/<tag>/<fps>')
 #api.add_resource(Video, '/video/<run_name>/<group>/<tag>')
+api.add_resource(HParams, '/hparams/<run_name>/<name>')
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=PORT)
