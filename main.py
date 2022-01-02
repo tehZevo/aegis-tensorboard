@@ -119,7 +119,7 @@ class HParams(Resource):
         run = resolve_run(experiment)
         p = "hparams/" + id
         #write and increment step
-        run["writer"].add_hparams(params, metrics, global_step=get_step(experiment, p))
+        run["writer"].add_hparams(params, metrics, id, global_step=get_step(experiment, p))
         increment_step(experiment, p)
 
 #TODO: mesh?
